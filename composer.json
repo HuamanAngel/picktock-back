@@ -16,7 +16,7 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
-        "twbs/bootstrap": "5.1.0"
+        "twbs/bootstrap": "4.6.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -53,21 +53,13 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "if test -f 'storage/oauth-public.key'; then @php artisan package:discover --ansi; fi"
+            "@php artisan package:discover --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "ssh-keygen -t rsa -b 4096 -f ./storage/id_rsa && mv ./storage/id_rsa ./storage/oauth-private.key && mv ./storage/id_rsa.pub ./storage/oauth-public.key",
-            "@php artisan clear-compiled",
-            "@php artisan optimize",
-            "@php artisan migrate --force",
-            "@php artisan passport:install --force"
         ]
     }
 }
