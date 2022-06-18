@@ -14,14 +14,18 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'user_nivel_tea' => 'required|numeric',
         ]);
         
         User::create([
             'name' => $request->name,
+            'lastname' => $request->lastname,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'user_nivel_tea' => $request->user_nivel_tea
         ]);
 
         return response()->json([
@@ -39,27 +43,34 @@ class AuthController extends Controller
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ]);
-
         $credentials = request(['email', 'password']);
-        
-        if (!Auth::attempt($credentials))
+        if (!Auth::guard('web')->attempt($credentials)) {
+
             return response()->json([
-                'message' => 'Unauthorized'
+                'res' => false,
+                'message' => 'Correo o contraseña erroneos'
             ], 401);
+        }
+        $user = Auth::guard('web')->user();
+        // Elimina un token si ya existe, mantiene la cantidad de token en 4
+        if (isset($user->tokens) && $user->tokens->count() > 3) {
+            $user->tokens[0]->delete();
+        }
+        // Borrar todos los tokens
+        // $user->tokens->each(function($tokena, $key) {
+        //     $tokena->delete();
+        // });
 
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $user->createToken('authToken');
 
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
-            
         return response()->json([
-            'access_token' => $tokenResult->accessToken,
+            'res' => true,
+            'message' => 'Login exitoso',
             'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-        ]);
+            'token' => $token->accessToken,
+            'expired' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
+            'data' => $user,
+        ], 200);
     }
 
     /**
