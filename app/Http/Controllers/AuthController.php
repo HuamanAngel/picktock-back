@@ -14,14 +14,18 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'user_nivel_tea' => 'required|numeric',
         ]);
         
         User::create([
             'name' => $request->name,
+            'lastname' => $request->lastname,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'user_nivel_tea' => $request->user_nivel_tea
         ]);
 
         return response()->json([
@@ -42,7 +46,7 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
         
-        if (!Auth::attempt($credentials))
+        if (!Auth::guard('api')->attempt($credentials))
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);
