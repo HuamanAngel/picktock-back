@@ -17,8 +17,8 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('cat_name');
             $table->string('cat_image');
-            $table->timestamps();
-            $table->boolean('cat_has_subcategory');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();            
         });
     }
 
