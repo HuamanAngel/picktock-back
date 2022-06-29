@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pictograma extends Model
 {
     // visibility
-    // 1 es publico, 2 es privado
+    // Publico es publico, Privado es privado
 
 
     use HasFactory;
@@ -30,7 +30,7 @@ class Pictograma extends Model
         'pic_pressed_for_kid' => false,
         'pic_calification_count' => 0,
         'pic_average_calification'=> 0,
-        'visibility' => 2
+        'visibility' => 'Privado'
     ];
     public function pictogramaCategorie(){
         return $this->belongsTo( Categorie::class, 'cat_id');

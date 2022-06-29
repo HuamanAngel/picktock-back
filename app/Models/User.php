@@ -42,4 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userPictograma()
+    {   
+        return $this->hasMany(Pictograma::class,'use_id');
+    }
+    public function userCategory()
+    {   
+        return $this->hasMany(UserCategorie::class,'use_id');
+    }
+
+    public function userCalification(){
+        return $this->hasMany(CalificationUserPictograma::class,'use_id');
+    }    
 }
