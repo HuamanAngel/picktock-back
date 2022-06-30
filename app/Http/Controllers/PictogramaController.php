@@ -29,7 +29,7 @@ class PictogramaController extends Controller
         $request->validate([
             'pic_title' => 'required|string|max:30|min:2',
             'pic_visibility' => 'required|integer|between:1,2',
-            'pic_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'pic_image' => 'required|image|mimes:jpeg,png,jpg,jfif|max:2048',
             'cat_id' => 'required|integer|min:0|exists:categories,id',
         ]);
 

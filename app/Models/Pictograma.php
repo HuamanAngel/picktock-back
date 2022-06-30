@@ -30,7 +30,7 @@ class Pictograma extends Model
         'pic_pressed_for_kid' => false,
         'pic_calification_count' => 0,
         'pic_average_calification'=> 0,
-        'visibility' => 'Privado'
+        'visibility' => 2
     ];
     public function pictogramaCategorie(){
         return $this->belongsTo( Categorie::class, 'cat_id');
