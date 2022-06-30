@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PictogramaController;
+use App\Http\Controllers\CategorieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::group([
     ], function() {
         Route::get('logout', [AuthController::class,'logout']);
         Route::get('user', [AuthController::class,'user']);
-        Route::apiResource('/pictograma', PictogramaController::class);        
+        Route::apiResource('/pictograma', PictogramaController::class); 
+        Route::apiResource('/categorie', CategorieController::class);
+        Route::get('categorie/pictograma/{id}', [CategorieController::class,'showPictograma']);
     });
 });
